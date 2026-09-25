@@ -51,7 +51,7 @@
 
 - [x] T5.1 สร้างตาราง `loans` ใน Supabase ตามโมเดลข้อมูลใน design.md ข้อ 4 (`id` uuid default `gen_random_uuid()`, `owner_id` uuid default `auth.uid()`, ฟิลด์เดิมที่เหลือ)
 - [x] T5.2 เปิด Row Level Security บนตาราง `loans` และเขียนนโยบาย select/insert/update ให้ทำได้เฉพาะแถวที่ `owner_id = auth.uid()`
-- [ ] T5.3 ปิดการสมัครสมาชิกเอง (self sign-up) ในตั้งค่า Supabase Auth แล้วสร้างบัญชีเจ้าของด้วยมือ (อีเมล + รหัสผ่าน) สำหรับใช้งานจริงและทดสอบ — **ต้องทำเองผ่าน Supabase Dashboard** ไม่มีเครื่องมือ MCP ให้ทำแทนได้
+- [x] T5.3 ปิดการสมัครสมาชิกเอง (self sign-up) ในตั้งค่า Supabase Auth แล้วสร้างบัญชีเจ้าของด้วยมือ (อีเมล + รหัสผ่าน) สำหรับใช้งานจริงและทดสอบ — ผู้ใช้ทำผ่าน Supabase Dashboard เสร็จแล้ว
 - [x] T5.4 ติดตั้ง `@supabase/supabase-js` และสร้าง `src/lib/supabaseClient.js` (อ่าน URL/anon key จาก environment variable ไม่ hardcode ในโค้ด)
 - [x] T5.5 สร้าง `src/lib/auth.js`: `signIn(email, password)`, `signOut()`, `getSession()`, ฟังการเปลี่ยนแปลง session
 - [x] T5.6 สร้าง `src/lib/loansApi.js` แทน `storage.js`: ฟังก์ชัน CRUD ของ Loan ผ่าน `supabase-js` (โหลดรายการ, เพิ่ม, แก้ไข, กดคืน/ยกเลิกคืน) คืนข้อความผิดพลาดภาษาไทยเมื่อเรียกไม่สำเร็จ ไม่ลบข้อมูลที่แสดงอยู่เมื่อเรียกล้มเหลว

@@ -43,7 +43,7 @@
 | T4.5 ไม่มีฟีเจอร์นอกขอบเขต + ศัพท์ตรง CONTEXT.md | เสร็จ | `566becf` |
 | T5.1 ตาราง `loans` ใน Supabase | เสร็จ (migration `20260925155649_create_loans_table`) | รอ commit |
 | T5.2 เปิด RLS + policy select/insert/update | เสร็จ (migration เดียวกับ T5.1) | รอ commit |
-| T5.3 ปิด self sign-up + สร้างบัญชีเจ้าของ | **ค้าง — ต้องทำเองผ่าน Supabase Dashboard** | - |
+| T5.3 ปิด self sign-up + สร้างบัญชีเจ้าของ | เสร็จ (ผู้ใช้ทำผ่าน Supabase Dashboard) | รอ commit |
 | T5.4 ติดตั้ง `supabase-js` + `supabaseClient.js` | เสร็จ | รอ commit |
 | T5.5 `auth.js` | เสร็จ | รอ commit |
 | T5.6 `loansApi.js` | เสร็จ | รอ commit |
@@ -52,20 +52,18 @@
 | T5.9 ลบ `storage.js` เดิม | เสร็จ (ผู้ใช้ยืนยันแล้ว) | รอ commit |
 | T5.10 อัปเดตศัพท์ในหน้าเว็บ | เสร็จ | รอ commit |
 
-**เฟส 1 – 4 เสร็จครบแล้ว** เฟส 5 (v2: Supabase + เข้าสู่ระบบ) เขียนโค้ดเสร็จครบยกเว้น T5.3 (ต้องทำเองผ่าน Dashboard) `npm test` ผ่านทั้งหมด 59 ข้อ (3 ไฟล์ หลังลบ `storage.test.js` ไม่มีเทสต์อัตโนมัติใหม่สำหรับ `loansApi.js`/`auth.js` เพราะเรียก Supabase จริง ดู design.md ข้อ 9) `npm run lint` ผ่าน (มี warning `react(set-state-in-effect)` ที่ `App.jsx:39` จากการเช็ค session ตอนเปิดหน้า เป็นรูปแบบมาตรฐานของ Supabase Auth ไม่ใช่บั๊ก) `npm run build` ผ่าน
+**เฟส 1 – 5 เสร็จครบแล้ว** (v2: Supabase + เข้าสู่ระบบ) `npm test` ผ่านทั้งหมด 59 ข้อ (3 ไฟล์ หลังลบ `storage.test.js` ไม่มีเทสต์อัตโนมัติใหม่สำหรับ `loansApi.js`/`auth.js` เพราะเรียก Supabase จริง ดู design.md ข้อ 9) `npm run lint` ผ่าน (มี warning `react(set-state-in-effect)` ที่ `App.jsx:39` จากการเช็ค session ตอนเปิดหน้า เป็นรูปแบบมาตรฐานของ Supabase Auth ไม่ใช่บั๊ก) `npm run build` ผ่าน
 commit แรกของ repository คือ `ee81221` (เอกสาร + `.gitignore`) สาขา `main` ยังไม่ push repository อยู่ที่ `borrow-buddy-samit/.git` (ไม่ใช่โฟลเดอร์แม่)
 
 ## สิ่งที่ต้องทำต่อ
-**ก่อนใช้งานจริงได้ ต้องทำ 2 อย่างนี้ก่อน (ผู้ใช้ต้องทำเอง ไม่มีเครื่องมือให้ agent ทำแทน):**
-1. ที่ Supabase Dashboard → Authentication → Sign In / Providers (Email) → ปิด "Allow new users to sign up"
-2. Authentication → Users → Add user → ใส่อีเมล + รหัสผ่านของเจ้าของ (ติ๊ก Auto Confirm User)
+T5.3 ทำครบแล้ว (ปิด self sign-up + สร้างบัญชีเจ้าของผ่าน Supabase Dashboard) เหลือแค่ทดสอบ login จริงในเบราว์เซอร์ (ดูหัวข้อถัดไป)
 
 สิ่งที่รอการตัดสินใจของผู้ใช้:
 - push ขึ้น remote (ยังไม่มีการสั่ง ห้าม push เอง) — สาขา `master` ตอนนี้ล้ำหน้า `origin/master` อยู่ 4 commit
 - ลบไฟล์เทมเพลตที่ไม่ใช้แล้ว (`src/assets/*`, `public/icons.svg`) ต้องถามก่อน
 - ฟีเจอร์นอกขอบเขต (ลบ Loan, แจ้งเตือน, เลื่อนกำหนด, รูปภาพ, สำรองข้อมูล, self sign-up, ลืมรหัสผ่านทางเว็บ) ตาม design ข้อ 10 ให้ทบทวน `CONTEXT.md` ก่อน
 
-**การทดสอบที่ยังไม่ได้ทำ**: ยังไม่ได้ทดสอบ login/RLS จริงในเบราว์เซอร์ เพราะยังไม่มีบัญชีเจ้าของ (T5.3 ค้าง) และ session นี้ไม่มีเครื่องมือเบราว์เซอร์ให้ใช้ (ผู้ใช้เลือกข้ามการติดตั้ง Claude in Chrome) ตรวจแล้วเฉพาะ: `npm test`/`npm run lint`/`npm run build` ผ่าน และ dev server (`npm run dev`) ขึ้นโดยไม่มี error ตอน transform โมดูลใหม่เพิ่ม
+**การทดสอบที่ยังไม่ได้ทำ**: ยังไม่ได้ทดสอบ login/RLS จริงในเบราว์เซอร์ เพราะ session นี้ไม่มีเครื่องมือเบราว์เซอร์ให้ใช้ (ผู้ใช้เลือกข้ามการติดตั้ง Claude in Chrome) ตอนนี้มีบัญชีเจ้าของแล้ว (T5.3 เสร็จ) ต้องให้ผู้ใช้ทดสอบเองผ่าน `npm run dev` ตรวจแล้วเฉพาะ: `npm test`/`npm run lint`/`npm run build` ผ่าน และ dev server (`npm run dev`) ขึ้นโดยไม่มี error ตอน transform โมดูลใหม่เพิ่ม
 
 ข้อจำกัดของการตรวจรับ: ตรวจมือถือด้วย iframe จำลองความกว้าง (360 – 390px) ไม่ใช่เครื่องจริง ส่วน component ไม่มีเทสต์อัตโนมัติ (Vitest ครอบคลุมเฉพาะ `src/lib`) ตรวจด้วยมือในเบราว์เซอร์
 
