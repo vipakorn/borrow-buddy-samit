@@ -7,13 +7,20 @@ main {
   gap: 20px;
 }
 
-/* หัวเรื่อง + ปุ่มสลับธีม */
+/* หัวเรื่อง + ปุ่มสลับธีม/ออกจากระบบ */
 .app-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ฟอร์มและช่องกรอก */
