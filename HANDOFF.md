@@ -49,10 +49,10 @@
 | T5.6 `loansApi.js` | เสร็จ | รอ commit |
 | T5.7 `LoginForm.jsx` | เสร็จ | รอ commit |
 | T5.8 ปรับ `App.jsx` ให้เช็ค session + ใช้ `loansApi.js` | เสร็จ | รอ commit |
-| T5.9 ลบ `storage.js` เดิม | **ค้าง — รอผู้ใช้ยืนยันก่อนลบไฟล์** (เลิกเรียกใช้ใน `App.jsx` แล้ว แต่ไฟล์ยังอยู่) | - |
+| T5.9 ลบ `storage.js` เดิม | เสร็จ (ผู้ใช้ยืนยันแล้ว) | รอ commit |
 | T5.10 อัปเดตศัพท์ในหน้าเว็บ | เสร็จ | รอ commit |
 
-**เฟส 1 – 4 เสร็จครบแล้ว** เฟส 5 (v2: Supabase + เข้าสู่ระบบ) เขียนโค้ดเสร็จแล้วยกเว้น T5.3/T5.9 ที่ค้างตามเหตุผลข้างต้น `npm test` ผ่านทั้งหมด 68 ข้อ (4 ไฟล์ เดิม ไม่มีเทสต์อัตโนมัติใหม่สำหรับ `loansApi.js`/`auth.js` เพราะเรียก Supabase จริง ดู design.md ข้อ 9) `npm run lint` ผ่าน (มี warning `react(set-state-in-effect)` ที่ `App.jsx:39` จากการเช็ค session ตอนเปิดหน้า เป็นรูปแบบมาตรฐานของ Supabase Auth ไม่ใช่บั๊ก) `npm run build` ผ่าน
+**เฟส 1 – 4 เสร็จครบแล้ว** เฟส 5 (v2: Supabase + เข้าสู่ระบบ) เขียนโค้ดเสร็จครบยกเว้น T5.3 (ต้องทำเองผ่าน Dashboard) `npm test` ผ่านทั้งหมด 59 ข้อ (3 ไฟล์ หลังลบ `storage.test.js` ไม่มีเทสต์อัตโนมัติใหม่สำหรับ `loansApi.js`/`auth.js` เพราะเรียก Supabase จริง ดู design.md ข้อ 9) `npm run lint` ผ่าน (มี warning `react(set-state-in-effect)` ที่ `App.jsx:39` จากการเช็ค session ตอนเปิดหน้า เป็นรูปแบบมาตรฐานของ Supabase Auth ไม่ใช่บั๊ก) `npm run build` ผ่าน
 commit แรกของ repository คือ `ee81221` (เอกสาร + `.gitignore`) สาขา `main` ยังไม่ push repository อยู่ที่ `borrow-buddy-samit/.git` (ไม่ใช่โฟลเดอร์แม่)
 
 ## สิ่งที่ต้องทำต่อ
@@ -61,9 +61,7 @@ commit แรกของ repository คือ `ee81221` (เอกสาร + `
 2. Authentication → Users → Add user → ใส่อีเมล + รหัสผ่านของเจ้าของ (ติ๊ก Auto Confirm User)
 
 สิ่งที่รอการตัดสินใจของผู้ใช้:
-- ยืนยันให้ลบ `src/lib/storage.js` และ `src/lib/storage.test.js` เดิมหรือไม่ (T5.9 — เลิกใช้แล้วแต่ยังไม่ลบไฟล์)
-- commit งานเฟส 5 (ยังไม่ได้ commit ระหว่างพัฒนา ต่างจากเฟส 1-4 ที่ commit ทีละ task)
-- push ขึ้น remote (ยังไม่มีการสั่ง ห้าม push เอง)
+- push ขึ้น remote (ยังไม่มีการสั่ง ห้าม push เอง) — สาขา `master` ตอนนี้ล้ำหน้า `origin/master` อยู่ 4 commit
 - ลบไฟล์เทมเพลตที่ไม่ใช้แล้ว (`src/assets/*`, `public/icons.svg`) ต้องถามก่อน
 - ฟีเจอร์นอกขอบเขต (ลบ Loan, แจ้งเตือน, เลื่อนกำหนด, รูปภาพ, สำรองข้อมูล, self sign-up, ลืมรหัสผ่านทางเว็บ) ตาม design ข้อ 10 ให้ทบทวน `CONTEXT.md` ก่อน
 
@@ -73,7 +71,7 @@ commit แรกของ repository คือ `ee81221` (เอกสาร + `
 
 หมายเหตุ: มี git-manager ตัวหนึ่งเคยรายงานผิดว่า `borrow-buddy` ไม่ใช่ git repository ทั้งที่ `.git` มีอยู่ ให้รัน git ด้วย `git -C "<พาธ borrow-buddy>"` และห้าม `git init`
 
-วิธีทดสอบในเบราว์เซอร์: dev server `npm run dev` ที่ http://localhost:5173/ ใส่ข้อมูลทดสอบผ่าน localStorage คีย์ `borrow-buddy:loans` แล้ว **ล้างข้อมูลทดสอบทุกครั้งหลังตรวจ** (ทั้งคีย์ `borrow-buddy:loans` และ `borrow-buddy:theme`)
+วิธีทดสอบในเบราว์เซอร์ (v2): dev server `npm run dev` ที่ http://localhost:5173/ ต้องมี `.env` (ดู `.env.example`) และมีบัญชีเจ้าของใน Supabase แล้ว (T5.3) Loan ไม่ได้อยู่ใน localStorage อีกต่อไป (อยู่ที่ Supabase) มีแค่ธีมที่ยังจำด้วย localStorage คีย์ `borrow-buddy:theme`
 
 ## โครงโค้ดปัจจุบัน (v2)
 `src/lib`:
@@ -83,7 +81,7 @@ commit แรกของ repository คือ `ee81221` (เอกสาร + `
 - `supabaseClient.js` (ไม่มีเทสต์): export `supabase` client เดียว อ่าน `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` จาก `.env` โยน error ถ้าไม่ตั้งค่า
 - `auth.js` (ไม่มีเทสต์ เรียก Supabase จริง): `signIn(email, password)` → `{ session, error }` (error เป็นข้อความไทยหรือ null), `signOut()`, `getSession()`, `onAuthStateChange(callback)` → คืนฟังก์ชันเลิกฟัง
 - `loansApi.js` (ไม่มีเทสต์ เรียก Supabase จริง, แทน `storage.js` เดิม): `fetchLoans()`, `insertLoan(loan)`, `updateLoan(loan)` ทุกฟังก์ชันคืน `{ loan(s), warning }` (`warning` เป็นข้อความไทยหรือ null) ไม่มี `deleteLoan` (นอกขอบเขต และตาราง `loans` ไม่มี RLS policy สำหรับ delete เลย)
-- `storage.js`/`storage.test.js` (เดิม, **เลิกใช้แล้วแต่ยังไม่ลบไฟล์** รอผู้ใช้ยืนยัน T5.9)
+- `storage.js`/`storage.test.js` (เดิม) **ถูกลบแล้ว** (T5.9 ผู้ใช้ยืนยันให้ลบ)
 
 `src/components` (ไม่มีเทสต์ ตรวจด้วยมือในเบราว์เซอร์): `LoginForm` (ใหม่, ฟอร์มอีเมล+รหัสผ่าน), `LoanForm`, `LoanList`, `LoanItem`, `SearchBox`, `ThemeToggle`
 
