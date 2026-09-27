@@ -1,12 +1,12 @@
 :root {
-  --text: #3f3a48;
-  --text-h: #08060d;
+  --text: #44474b;
+  --text-h: #1c1a1b;
   --bg: #fff;
-  --surface: #f8f7fa;
-  --border: #d8d6dc;
-  --accent: #6d28d9;
+  --surface: #f7f6f6;
+  --border: #d9d4d4;
+  --accent: #7a1f2b;
   --accent-text: #fff;
-  --focus: #6d28d9;
+  --focus: #7a1f2b;
 
   /* สถานะ: ใช้คู่กับข้อความเสมอ ไม่พึ่งสีอย่างเดียว */
   --overdue: #b42318;
@@ -38,14 +38,14 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --text: #c4c7d0;
-  --text-h: #f3f4f6;
-  --bg: #16171d;
-  --surface: #1f2028;
-  --border: #363845;
-  --accent: #c4a1ff;
-  --accent-text: #16171d;
-  --focus: #c4a1ff;
+  --text: #cac7c7;
+  --text-h: #f5f3f3;
+  --bg: #1a1718;
+  --surface: #242021;
+  --border: #3c3637;
+  --accent: #eb99a1;
+  --accent-text: #241a1c;
+  --focus: #eb99a1;
 
   --overdue: #fda29b;
   --overdue-bg: rgba(240, 68, 56, 0.16);
